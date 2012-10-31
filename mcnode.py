@@ -6,6 +6,7 @@
 # outward facing API for mcnode
 
 import urllib
+import subprocess
 
 # configuration that may later be put into a file
 # dictionaries are awesome for this!!!
@@ -30,4 +31,20 @@ def __get_remote_file(src, dest):
 def update_server():
 	__get_remote_file(config['server_jar_url'], config['server_jar_path'])
 
-update_server()
+# returns true if the os supports java from the command line
+# TODO: make quiet
+def __check_path():
+	try:
+		subprocess.call('java', stdout=None)
+		return True
+	except OSError:
+		__log('$PATH not set up properly.')
+	return False
+
+# spins up the server
+def start_server():
+	if not __check_path():
+		return
+
+# update_server()
+start_server()
