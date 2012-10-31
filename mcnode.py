@@ -49,14 +49,21 @@ class MCNode:
 		os.chdir(self.config['server_directory'])
 		self.server_process = subprocess.Popen(['java', '-Xms' + self.config['init_memory'], '-Xmx' + self.config['max_memory'], '-jar', self.config['server_jar_path'], 'nogui'], stdin=subprocess.PIPE)
 
+	# returns the status of the server process as a subprocess 'returncode'
 	def poll(self):
 		return self.server_process.poll()
 
-	def help(self):
-		print self.server_process.communicate('help')
 
+	def tell(self, message):
+		print self.server_process.communicate(message)
+
+	# gently shuts down the server
 	def terminate(self):
 		self.server_process.terminate()
+
+	# violently destroys the server. only use if the server is disobedient
+	def kill(self):
+		self.server_process.kill()
 
 	def __init__(self, config):
 		self.config = config
@@ -70,5 +77,5 @@ node = MCNode({
 		'max_memory' : '1024M'
 })
 
-node.help()
+node.tell('help')
 node.terminate()
