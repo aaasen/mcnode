@@ -46,7 +46,7 @@ class MCNode:
 		# 	return
 
 		os.chdir(self.config['server_directory'])
-		subprocess.call(['java', '-Xms' + self.config['init_memory'], '-Xmx' + self.config['max_memory'], '-jar', self.config['server_jar_path'], 'nogui'])
+		self.server_process = subprocess.Popen(['java', '-Xms' + self.config['init_memory'], '-Xmx' + self.config['max_memory'], '-jar', self.config['server_jar_path'], 'nogui'])
 
 	def __init__(self, config):
 		self.config = config
