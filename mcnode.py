@@ -55,8 +55,8 @@ class MCNode:
 	def help(self):
 		print self.server_process.communicate('help')
 
-	def kill(self):
-		self.server_process.kill()
+	def terminate(self):
+		self.server_process.terminate()
 
 	def __init__(self, config):
 		self.config = config
@@ -71,4 +71,4 @@ node = MCNode({
 })
 
 node.help()
-node.kill()
+node.terminate()
