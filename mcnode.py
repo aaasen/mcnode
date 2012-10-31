@@ -8,6 +8,7 @@
 import urllib
 import subprocess
 import os
+import time
 
 # downloads src into dest
 def get_remote_file(src, dest):
@@ -46,10 +47,20 @@ class MCNode:
 		# 	return
 
 		os.chdir(self.config['server_directory'])
-		self.server_process = subprocess.Popen(['java', '-Xms' + self.config['init_memory'], '-Xmx' + self.config['max_memory'], '-jar', self.config['server_jar_path'], 'nogui'])
+		self.server_process = subprocess.Popen(['java', '-Xms' + self.config['init_memory'], '-Xmx' + self.config['max_memory'], '-jar', self.config['server_jar_path'], 'nogui'], stdin=subprocess.PIPE)
+
+	def poll(self):
+		return self.server_process.poll()
+
+	def help(self):
+		print self.server_process.communicate('help')
+
+	def kill(self):
+		self.server_process.kill()
 
 	def __init__(self, config):
 		self.config = config
+		self.start_server()
 
 node = MCNode({ 
 		'server_jar_url' : 'https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft_server.jar',
@@ -59,5 +70,5 @@ node = MCNode({
 		'max_memory' : '1024M'
 })
 
-node.update_server()
-node.start_server()
+node.help()
+node.kill()
