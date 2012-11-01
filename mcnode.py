@@ -32,7 +32,7 @@ class MCNode:
 
 	parse_helpers = {
 		'username' : '([a-zA-Z0-9]{3,20})',
-		'ip' : '\[/([0-9\.])',
+		'ip' : '\[/([^\]].*)',
 		'date' : '([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})',
 		'time' : '([0-9]{2}:[0-9]{2}:[0-9]{2})',
 		'log_type' : '\[(INFO|WARNING|ERROR)\]'
@@ -44,7 +44,7 @@ class MCNode:
 
 	#  % (parse_helpers['username'], parse_helpers['ip'])
 	parsers = {
-		'connect' :  'logged in',
+		'connect' : '%s%s%s' % (combined_parse_helpers['line_start'], parse_helpers['username'], parse_helpers['ip']),
 		'disconnect' : 'lost connection',
 		'say' : '%s<%s>([^\n\r]*)' % (combined_parse_helpers['line_start'], parse_helpers['username'])
 	}
@@ -81,7 +81,6 @@ class MCNode:
 		while True:
 			index = self.server_process.expect(self.parsers.values())
 			print self.parsers.keys()[index]
-			print self.server_process.match.group(0)
 			print self.server_process.match.groups()
 
 	def say(self, message):
