@@ -7,11 +7,11 @@ A Python API for running and extending a Minecraft server.
 ## Create a Server
 ```python
 node = MCNode({
-		'server_jar_url' : 'https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft_server.jar',
-		'server_directory' : './server/',
-		'server_jar_path' : 'minecraft_server.jar',
-		'init_memory' : '512M',
-		'max_memory' : '1024M'
+	'server_jar_url' : 'https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft_server.jar',
+	'server_directory' : './server/',
+	'server_jar_path' : 'minecraft_server.jar',
+	'init_memory' : '512M',
+	'max_memory' : '1024M'
 >})
 ```
 
@@ -28,7 +28,17 @@ Functions like `node.say()`, `node.ban()` and `node.tp()` all extend `node.tell(
 
 # Complete MCNode API
 
-## killing functions
+## Communicating with the Server
+
+### `tell()` passes an arbitrary string into the server
+
+### `say()` wrapper for Minecraft's say function
+```python
+def say(self, message):
+	return self.tell('say ' + message)
+```
+
+## Killing Functions
 
 ### `stop()` asks the server to stop
 ```python
