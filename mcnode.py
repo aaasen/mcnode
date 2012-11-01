@@ -9,6 +9,7 @@ import urllib
 import subprocess
 import os
 import time
+import pexpect
 
 # downloads src into dest
 def get_remote_file(src, dest):
