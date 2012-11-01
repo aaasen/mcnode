@@ -54,11 +54,11 @@ class MCNode:
 		return self.server_process.poll()
 
 	def tell(self, message):
-		self.server_process.stdin.write(message)
+		return self.server_process.stdin.write(message)
 
 	# gently shuts down the server
 	def terminate(self):
-		self.server_process.kill()
+		self.server_process.terminate()
 
 	# violently destroys the server. only use if the server is disobedient
 	def kill(self):
@@ -66,17 +66,16 @@ class MCNode:
 
 	def __init__(self, config):
 		self.config = config
+		self.update_server()
 		self.start_server()
 
 node = MCNode({ 
 		'server_jar_url' : 'https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft_server.jar',
-		'server_directory' : './server/',
+		'server_directory' : './dev_server/',
 		'server_jar_path' : 'minecraft_server.jar',
 		'init_memory' : '512M',
 		'max_memory' : '1024M'
 })
 
-print node.server_process.stdout.stdout.read()
-node.tell('help')
-node.tell('stop')
-# node.terminate()
+time.sleep(10)
+node.kill()
