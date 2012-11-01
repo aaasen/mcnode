@@ -30,6 +30,11 @@ def check_path():
 class MCNode:
 	"""A Minecraft server."""
 
+	parsers = {
+		'connect' : 'logged in',
+		'disconnect' : 'lost connection'
+	}
+
 	# logs an arbitrary message to something
 	# just wraps print for development, but may log to a file in production
 	def __log(message):
@@ -57,6 +62,11 @@ class MCNode:
 	# sends an arbitrary string to the node's stdin
 	def tell(self, message):
 		return self.server_process.sendline(message)
+
+	def read(self):
+		while True:
+			index = self.server_process.expect(self.parsers.values())
+			print self.parsers.keys()[index]
 
 	def say(self, message):
 		return self.tell('say ' + message)
@@ -86,7 +96,5 @@ node = MCNode({
 		'max_memory' : '1024M'
 })
 
-time.sleep(5)
-node.tell('say hello')
-time.sleep(5)
-node.stop()
+node.read()
+
