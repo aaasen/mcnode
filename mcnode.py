@@ -33,14 +33,20 @@ class MCNode:
 	parse_helpers = {
 		'username' : '([a-zA-Z0-9]{3,20})',
 		'ip' : '\[/([0-9\.])',
-		'line_start' : 'asd'
+		'date' : '([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})',
+		'time' : '([0-9]{2}:[0-9]{2}:[0-9]{2})',
+		'log_type' : '\[(INFO|WARNING|ERROR)\]'
+	}
+
+	combined_parse_helpers = {
+		'line_start' : '%s %s %s ' % (parse_helpers['date'], parse_helpers['time'], parse_helpers['log_type'])
 	}
 
 	#  % (parse_helpers['username'], parse_helpers['ip'])
 	parsers = {
 		'connect' :  'logged in',
 		'disconnect' : 'lost connection',
-		'say' : '<(%s)>([^\n\r]*)' % (parse_helpers['username'])
+		'say' : '%s<%s>([^\n\r]*)' % (combined_parse_helpers['line_start'], parse_helpers['username'])
 	}
 
 	# logs an arbitrary message to something
