@@ -48,22 +48,30 @@ class MCNode:
 		# 	return
 
 		os.chdir(self.config['server_directory'])
-		self.server_process = subprocess.Popen(['java', '-Xms' + self.config['init_memory'], '-Xmx' + self.config['max_memory'], '-jar', self.config['server_jar_path'], 'nogui'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		self.server_process = pexpect.spawn('java -Xms%s -Xmx%s -jar %s nogui' % (self.config['init_memory'], self.config['max_memory'], self.config['server_jar_path']))
 
 	# returns the status of the server process as a subprocess 'returncode'
 	def poll(self):
-		return self.server_process.poll()
+		return self.server_process.isalive()
 
+	# sends an arbitrary string to the node's stdin
 	def tell(self, message):
-		return self.server_process.stdin.write(message)
+		return self.server_process.sendline(message)
+
+	def say(self, message):
+		return self.tell('say ' + message)
+
+	# asks the server to stop
+	def stop(self):
+		return self.tell('stop')
 
 	# gently shuts down the server
 	def terminate(self):
 		self.server_process.terminate()
 
-	# violently destroys the server. only use if the server is disobedient
+	# violently kills the server
 	def kill(self):
-		self.server_process.kill()
+		self.server_process.terminate(force=True)
 
 	def __init__(self, config):
 		self.config = config
@@ -78,5 +86,7 @@ node = MCNode({
 		'max_memory' : '1024M'
 })
 
-time.sleep(10)
-node.kill()
+time.sleep(5)
+node.tell('say hello')
+time.sleep(5)
+node.stop()
