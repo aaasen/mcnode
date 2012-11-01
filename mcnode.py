@@ -30,9 +30,17 @@ def check_path():
 class MCNode:
 	"""A Minecraft server."""
 
+	parse_helpers = {
+		'username' : '([a-zA-Z0-9]{3,20})',
+		'ip' : '\[/([0-9\.])',
+		'line_start' : 'asd'
+	}
+
+	#  % (parse_helpers['username'], parse_helpers['ip'])
 	parsers = {
-		'connect' : 'logged in',
-		'disconnect' : 'lost connection'
+		'connect' :  'logged in',
+		'disconnect' : 'lost connection',
+		'say' : '<(%s)>([^\n\r]*)' % (parse_helpers['username'])
 	}
 
 	# logs an arbitrary message to something
@@ -67,6 +75,8 @@ class MCNode:
 		while True:
 			index = self.server_process.expect(self.parsers.values())
 			print self.parsers.keys()[index]
+			print self.server_process.match.group(0)
+			print self.server_process.match.groups()
 
 	def say(self, message):
 		return self.tell('say ' + message)
