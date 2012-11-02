@@ -8,8 +8,9 @@ A Python API for running and extending a Minecraft server.
 This downloads the Minecraft server jar, and starts up a server with the specified options.
 GreetBot will also greet people by name when they log in.
 
-`minecraft_server.py`
 ```python
+# minecraft_server.py
+
 from mcnode import MCNode
 from greet_bot import GreetBot
 
@@ -25,8 +26,9 @@ node.add_bot(GreetBot(node))
 node.read()
 ```
 
-`greet_bot.py`
 ```python
+# greet_bot.py
+
 from mcbot import MCBot
 
 class GreetBot(MCBot):
