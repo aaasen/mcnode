@@ -1,9 +1,10 @@
 # @aaaasen (Lane Aasen)
 # November 2012
 # Python 2.7
+# Tested on (Arch) Linux
 
 # mcnode.py
-# outward facing API for mcnode
+# python wrapper for minecraft servers
 
 import urllib
 import subprocess
