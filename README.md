@@ -37,7 +37,27 @@ class GreetBot(MCBot):
 ```
 
 Then, in a command line, run `python2 minecraft_server.py`
-> Note: the `python2` command may differ by system. Check `python`, `python2.7`, etc. It just needs to be python 2 (probably 2.7)
+> Note: the `python2` command may differ by system. Check `python`, `python2.7`, etc. It just needs to be Python 2 (probably 2.7)
+
+# Installation
+
+### Fetch from Github
+> `git clone git://github.com/laneaasen/mcnode.git`
+
+### Install pexpect (bundled with MCNode)
+> ```bash
+cd mcnode/include/pexpect/
+sudo python2 setup.py install
+```
+>> Note: the `python2` command may differ by system. Check `python`, `python2.7`, etc. It just needs to be Python 2 (probably 2.7)
+
+### Run the Example Server
+> ```bash
+python2 main.py
+```
+
+### Log into the Server on Minecraft
+> It will be running on `localhost`. To configure the Minecraft server itself, open up the server directory (`server/` by default) and edit `server.properties`. 
 
 # The Full API
 
