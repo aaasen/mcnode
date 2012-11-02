@@ -43,12 +43,14 @@ class MCNode:
 		'line_start' : '%s %s %s' % (parse_helpers['date'], parse_helpers['time'], parse_helpers['log_type'])
 	}
 
-	#  % (parse_helpers['username'], parse_helpers['ip'])
 	parsers = {
 		'connect' : '%s %s%s' % (combined_parse_helpers['line_start'], parse_helpers['username'], parse_helpers['ip']),
 		'disconnect' : '%s %s lost connection: ([^\n\r]*)' % (combined_parse_helpers['line_start'], parse_helpers['username']),
 		'say' : '%s <%s> ([^\n\r]*)' % (combined_parse_helpers['line_start'], parse_helpers['username'])
 	}
+
+	# bots registered with the mcnode
+	bots = []
 
 	# logs an arbitrary message to something
 	# just wraps print for development, but may log to a file in production
@@ -70,6 +72,15 @@ class MCNode:
 		os.chdir(self.config['server_directory'])
 		self.server_process = pexpect.spawn('java -Xms%s -Xmx%s -jar %s nogui' % (self.config['init_memory'], self.config['max_memory'], self.config['server_jar_path']))
 
+	# registers a bot with the node so it can respond to events
+	def add_bot(self, bot):
+		self.bots.append(bot)
+
+	# adds a list of bots
+	def add_bots(self, bots):
+		for bot in bots:
+			self.add_bot(bot)
+
 	# returns the status of the server process as a subprocess 'returncode'
 	def poll(self):
 		return self.server_process.isalive()
@@ -80,9 +91,27 @@ class MCNode:
 
 	def read(self):
 		while True:
+			print 'hello'
 			index = self.server_process.expect(self.parsers.values())
-			print self.parsers.keys()[index]
-			print self.server_process.match.groups()
+			# print '1'
+			# event = self.parsers.keys()[index]
+			# print '2'
+			# data = self.server_process.match.groups()
+			print '3'
+
+			# print index, data, event
+
+			# for bot in self.bots:
+			# 	print 'hello this is bot'
+			# 	if event == 'connect':
+			# 		print 'connect send'
+			# 		bot.on_connect(data)
+			# 	elif event == 'disconnect':
+			# 		bot.on_disconnect(data)
+			# 	elif event == 'say':
+			# 		bot.on_say(data)
+			# 	else:
+			# 		print 'nothing found'
 
 	def say(self, message):
 		return self.tell('say ' + message)
@@ -103,13 +132,3 @@ class MCNode:
 		self.config = config
 		self.update_server()
 		self.start_server()
-
-node = MCNode({ 
-		'server_jar_url' : 'https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft_server.jar',
-		'server_directory' : './dev_server/',
-		'server_jar_path' : 'minecraft_server.jar',
-		'init_memory' : '512M',
-		'max_memory' : '1024M'
-})
-
-node.read()
