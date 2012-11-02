@@ -8,6 +8,7 @@ A Python API for running and extending a Minecraft server.
 This downloads the Minecraft server jar, and starts up a server with the specified options.
 GreetBot will also greet people by name when they log in.
 
+`minecraft_server.py`
 ```python
 from mcnode import MCNode
 from greet_bot import GreetBot
@@ -24,6 +25,7 @@ node.add_bot(GreetBot(node))
 node.read()
 ```
 
+`greet_bot.py`
 ```python
 from mcbot import MCBot
 
@@ -32,29 +34,35 @@ class GreetBot(MCBot):
 		self.node.say('Welcome, %s' % (data[3]))
 ```
 
+Then, in a command line, run `python2 minecraft_server.py`
+> Note: the `python2` command may differ by system. Check `python`, `python2.7`, etc. It just needs to be python 2 (probably 2.7)
+
 # The Full API
 
 ## Communicating with the Server
 
-### `node.tell(message)` passes an arbitrary string into the server
-Functions like `node.say()`, `node.ban()` and `node.tp()` all extend `node.tell()`.
+#### `node.tell(message)`
+> Passes an arbitrary string into the server.
+> Functions like `node.say()`, `node.ban()` and `node.tp()` all extend `node.tell()`.
 
-### `node.say(message)` wrapper for Minecraft's say function
-```python
+#### `node.say(message)`
+> Wrapper for Minecraft's say function.
+> ```python
 def say(self, message):
 	return self.tell('say ' + message)
 ```
 
 ## Killing the Server
 
-### `node.stop()` asks the server to stop
-```python
+#### `node.stop()` 
+> Politely asks the server to stop.
+> ```python
 def stop(self):
     return self.tell('stop')
 ```
 
-### `node.terminate()`
-Uses `SIGTERM` (or Windows equivalent). Usually won't cause data loss, but `node.stop()` is still advised.
+#### `node.terminate()`
+> Uses `SIGTERM` (or Windows equivalent) to shut down the server. Usually won't cause data loss, but `node.stop()` is still advised.
 
-### `nodekill()` violently destroys the server
-Uses `SIGKILL` (or Windows equivalent). This is not advised as it can cause data loss.
+#### `node.kill()`
+> Uses `SIGKILL` (or Windows equivalent) to kill the server. This is not advised as it may cause data loss.
