@@ -46,7 +46,7 @@ class MCNode:
 	parsers = {
 		'connect' : '%s %s%s' % (combined_parse_helpers['line_start'], parse_helpers['username'], parse_helpers['ip']),
 		'disconnect' : '%s %s lost connection: ([^\n\r]*)' % (combined_parse_helpers['line_start'], parse_helpers['username']),
-		'say' : '%s<%s>([^\n\r]*)' % (combined_parse_helpers['line_start'], parse_helpers['username'])
+		'say' : '%s <%s> ([^\n\r]*)' % (combined_parse_helpers['line_start'], parse_helpers['username'])
 	}
 
 	# logs an arbitrary message to something
