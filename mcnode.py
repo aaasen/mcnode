@@ -29,7 +29,7 @@ def check_path():
 		return False
 
 class MCNode:
-	"""A Minecraft server."""
+	"""a python wrapper for minecraft servers."""
 
 	parse_helpers = {
 		'username' : '([a-zA-Z0-9]{3,20})',
