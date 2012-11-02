@@ -4,4 +4,6 @@ server/
 world/
 dev_server/
 *.tar*
+*.pyc
+
 
