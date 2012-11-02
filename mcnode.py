@@ -106,7 +106,7 @@ class MCNode:
 				elif event == 'say':
 					bot.on_say(data)
 				else:
-					print 'nothing found'
+					print 'unknown event'
 
 	def say(self, message):
 		return self.tell('say ' + message)
