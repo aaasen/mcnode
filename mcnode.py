@@ -91,27 +91,22 @@ class MCNode:
 
 	def read(self):
 		while True:
-			print 'hello'
 			index = self.server_process.expect(self.parsers.values())
-			# print '1'
-			# event = self.parsers.keys()[index]
-			# print '2'
-			# data = self.server_process.match.groups()
-			print '3'
+			event =  self.parsers.keys()[index]
+			data = self.server_process.match.groups()
 
-			# print index, data, event
+			print event
+			print data
 
-			# for bot in self.bots:
-			# 	print 'hello this is bot'
-			# 	if event == 'connect':
-			# 		print 'connect send'
-			# 		bot.on_connect(data)
-			# 	elif event == 'disconnect':
-			# 		bot.on_disconnect(data)
-			# 	elif event == 'say':
-			# 		bot.on_say(data)
-			# 	else:
-			# 		print 'nothing found'
+			for bot in self.bots:
+				if event == 'connect':
+					bot.on_connect(data)
+				elif event == 'disconnect':
+					bot.on_disconnect(data)
+				elif event == 'say':
+					bot.on_say(data)
+				else:
+					print 'nothing found'
 
 	def say(self, message):
 		return self.tell('say ' + message)
