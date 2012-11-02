@@ -32,20 +32,20 @@ class MCNode:
 
 	parse_helpers = {
 		'username' : '([a-zA-Z0-9]{3,20})',
-		'ip' : '\[/([^\]].*)',
+		'ip' : '\[/([^\]]*)',
 		'date' : '([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})',
 		'time' : '([0-9]{2}:[0-9]{2}:[0-9]{2})',
 		'log_type' : '\[(INFO|WARNING|ERROR)\]'
 	}
 
 	combined_parse_helpers = {
-		'line_start' : '%s %s %s ' % (parse_helpers['date'], parse_helpers['time'], parse_helpers['log_type'])
+		'line_start' : '%s %s %s' % (parse_helpers['date'], parse_helpers['time'], parse_helpers['log_type'])
 	}
 
 	#  % (parse_helpers['username'], parse_helpers['ip'])
 	parsers = {
-		'connect' : '%s%s%s' % (combined_parse_helpers['line_start'], parse_helpers['username'], parse_helpers['ip']),
-		'disconnect' : 'lost connection',
+		'connect' : '%s %s%s' % (combined_parse_helpers['line_start'], parse_helpers['username'], parse_helpers['ip']),
+		'disconnect' : '%s %s lost connection: ([^\n\r]*)' % (combined_parse_helpers['line_start'], parse_helpers['username']),
 		'say' : '%s<%s>([^\n\r]*)' % (combined_parse_helpers['line_start'], parse_helpers['username'])
 	}
 
@@ -112,4 +112,3 @@ node = MCNode({
 })
 
 node.read()
-
