@@ -125,5 +125,5 @@ class MCNode:
 
 	def __init__(self, config):
 		self.config = config
-		self.update_server()
+		# self.update_server()
 		self.start_server()

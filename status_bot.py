@@ -23,7 +23,7 @@ class StatusBot(MCBot):
 		self.player_notifier.put({ 'player[username]' : data[3], 'player[online]' : 'false' }, self.get_url(data[3]))
 
 	def on_say(self, data):
-		self.comment_notifier.post({ 'comment[content]' : data[4] })
+		self.comment_notifier.post({ 'comment[content]' : data[4], 'comment[commenter]' : data[3] })
 
 	def __init__(self, node, url):
 		self.node = node
