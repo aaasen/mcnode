@@ -1,3 +1,10 @@
+# @aaaasen (Lane Aasen)
+# November 2012
+# Python 2.7
+# Tested on (Arch) Linux
+
+# greet_bot.py
+# greets users by name when the log in
 
 from mcbot import MCBot
 

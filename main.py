@@ -2,6 +2,7 @@
 from mcnode import MCNode
 from greet_bot import GreetBot
 from shutdown_bot import ShutdownBot
+from status_bot import StatusBot
 
 node = MCNode({ 
 		'server_jar_url' : 'https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft_server.jar',
@@ -13,5 +14,6 @@ node = MCNode({
 
 node.add_bot(GreetBot(node))
 node.add_bot(ShutdownBot(node))
+node.add_bot(StatusBot(node, 'http://localhost:3000/players'))
 
 node.read()

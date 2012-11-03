@@ -10,7 +10,7 @@
 from mcnode import MCNode
 
 class MCBot:
-	"""bots that repsond to events fired by mcnodes"""
+	"""a bot that notifies an external server of all events"""
 
 	def on_connect(self, data):
 		return
