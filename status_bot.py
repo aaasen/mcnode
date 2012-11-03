@@ -13,15 +13,19 @@ class StatusBot(MCBot):
 	"""a bot that says hello to people when they log in"""
 
 	def get_url(self, username):
-		return self.mcnotifier.url + username
+		return self.player_notifier.url + username
 
 	def on_connect(self, data):
-		self.mcnotifier.post({ 'player[username]' : data[3], 'player[online]' : 'true' })
-		self.mcnotifier.put({ 'player[username]' : data[3], 'player[online]' : 'true' }, self.get_url(data[3]))
+		self.player_notifier.post({ 'player[username]' : data[3], 'player[online]' : 'true' })
+		self.player_notifier.put({ 'player[username]' : data[3], 'player[online]' : 'true' }, self.get_url(data[3]))
 
 	def on_disconnect(self, data):
-		self.mcnotifier.put({ 'player[username]' : data[3], 'player[online]' : 'false' }, self.get_url(data[3]))
+		self.player_notifier.put({ 'player[username]' : data[3], 'player[online]' : 'false' }, self.get_url(data[3]))
+
+	def on_say(self, data):
+		self.comment_notifier.post({ 'comment[content]' : data[4] })
 
 	def __init__(self, node, url):
 		self.node = node
-		self.mcnotifier = MCNotifier(url)
+		self.player_notifier = MCNotifier(url + 'players')
+		self.comment_notifier = MCNotifier(url + 'comments')

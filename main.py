@@ -14,6 +14,6 @@ node = MCNode({
 
 node.add_bot(GreetBot(node))
 node.add_bot(ShutdownBot(node))
-node.add_bot(StatusBot(node, 'http://localhost:3000/players'))
+node.add_bot(StatusBot(node, 'http://localhost:3000/'))
 
 node.read()
