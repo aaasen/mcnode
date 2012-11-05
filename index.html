@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Mcnode by laneaasen</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Mcnode</h1>
+        <p>Scripts and an API to easily start, update, maintain, administrate and enjoy a minecraft server.</p>
+        <p class="view"><a href="https://github.com/laneaasen/mcnode">View the Project on GitHub <small>laneaasen/mcnode</small></a></p>
+        <ul>
+          <li><a href="https://github.com/laneaasen/mcnode/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/laneaasen/mcnode/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/laneaasen/mcnode">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>MCNode</h1>
+
+<p>A Python API for running and extending a Minecraft server.</p>
+
+<h1>Examples</h1>
+
+<h2>Make and Extend a Server</h2>
+
+<p>This downloads the Minecraft server jar, and starts up a server with the specified options.
+GreetBot will also greet people by name when they log in.</p>
+
+<div class="highlight"><pre><span class="c"># minecraft_server.py</span>
+
+<span class="kn">from</span> <span class="nn">mcnode</span> <span class="kn">import</span> <span class="n">MCNode</span>
+<span class="kn">from</span> <span class="nn">greet_bot</span> <span class="kn">import</span> <span class="n">GreetBot</span>
+
+<span class="n">node</span> <span class="o">=</span> <span class="n">MCNode</span><span class="p">({</span> 
+        <span class="s">'server_jar_url'</span> <span class="p">:</span> <span class="s">'https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft_server.jar'</span><span class="p">,</span>
+        <span class="s">'server_directory'</span> <span class="p">:</span> <span class="s">'./server/'</span><span class="p">,</span>
+        <span class="s">'server_jar_path'</span> <span class="p">:</span> <span class="s">'minecraft_server.jar'</span><span class="p">,</span>
+        <span class="s">'init_memory'</span> <span class="p">:</span> <span class="s">'512M'</span><span class="p">,</span>
+        <span class="s">'max_memory'</span> <span class="p">:</span> <span class="s">'1024M'</span>
+<span class="p">})</span>
+
+<span class="n">node</span><span class="o">.</span><span class="n">add_bot</span><span class="p">(</span><span class="n">GreetBot</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+<span class="n">node</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</pre></div>
+
+<div class="highlight"><pre><span class="c"># greet_bot.py</span>
+
+<span class="kn">from</span> <span class="nn">mcbot</span> <span class="kn">import</span> <span class="n">MCBot</span>
+
+<span class="k">class</span> <span class="nc">GreetBot</span><span class="p">(</span><span class="n">MCBot</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">on_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">say</span><span class="p">(</span><span class="s">'Welcome, </span><span class="si">%s</span><span class="s">'</span> <span class="o">%</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+</pre></div>
+
+<p>Then, in a command line, run <code>python2 minecraft_server.py</code></p>
+
+<blockquote>
+<p>Note: the <code>python2</code> command may differ by system. Check <code>python</code>, <code>python2.7</code>, etc. It just needs to be Python 2 (probably 2.7)</p>
+</blockquote>
+
+<h1>Installation</h1>
+
+<h3>Fetch from Github</h3>
+
+<blockquote>
+<p><code>git clone git://github.com/laneaasen/mcnode.git</code></p>
+</blockquote>
+
+<h3>Install pexpect (bundled with MCNode)</h3>
+
+<blockquote>
+<div class="highlight"><pre><span class="nb">cd </span>mcnode/include/pexpect/
+sudo python2 setup.py install
+</pre></div>
+
+<blockquote>
+<p>Note: the <code>python2</code> command may differ by system. Check <code>python</code>, <code>python2.7</code>, etc. It just needs to be Python 2 (probably 2.7)</p>
+</blockquote>
+</blockquote>
+
+<h3>Run the Example Server</h3>
+
+<blockquote>
+<div class="highlight"><pre>python2 main.py
+</pre></div>
+</blockquote>
+
+<h3>Log into the Server on Minecraft</h3>
+
+<blockquote>
+<p>It will be running on <code>localhost</code>. To configure the Minecraft server itself, open up the server directory (<code>server/</code> by default) and edit <code>server.properties</code>. </p>
+</blockquote>
+
+<h1>The Full API</h1>
+
+<h2>Communicating with the Server</h2>
+
+<h4><code>node.tell(message)</code></h4>
+
+<blockquote>
+<p>Passes an arbitrary string into the server.
+Functions like <code>node.say()</code>, <code>node.ban()</code> and <code>node.tp()</code> all extend <code>node.tell()</code>.</p>
+</blockquote>
+
+<h4><code>node.say(message)</code></h4>
+
+<blockquote>
+<p>Wrapper for Minecraft's say function.</p>
+
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">say</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tell</span><span class="p">(</span><span class="s">'say '</span> <span class="o">+</span> <span class="n">message</span><span class="p">)</span>
+</pre></div>
+</blockquote>
+
+<h2>Killing the Server</h2>
+
+<h4><code>node.stop()</code></h4>
+
+<blockquote>
+<p>Politely asks the server to stop.</p>
+
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tell</span><span class="p">(</span><span class="s">'stop'</span><span class="p">)</span>
+</pre></div>
+</blockquote>
+
+<h4><code>node.terminate()</code></h4>
+
+<blockquote>
+<p>Uses <code>SIGTERM</code> (or Windows equivalent) to shut down the server. Usually won't cause data loss, but <code>node.stop()</code> is still advised.</p>
+</blockquote>
+
+<h4><code>node.kill()</code></h4>
+
+<blockquote>
+<p>Uses <code>SIGKILL</code> (or Windows equivalent) to kill the server. This is not advised as it may cause data loss.</p>
+</blockquote>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/laneaasen">laneaasen</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
